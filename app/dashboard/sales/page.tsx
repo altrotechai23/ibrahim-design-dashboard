@@ -3,9 +3,11 @@ import { CreateSaleModal } from "@/components/sales/create-sale-modal";
 import { SalesTable } from "@/components/sales/sales-table";
 
 import { getSales } from "@/actions/sales/get-sales";
+import { getProducts } from "@/actions/products/get-products";
 
 export default async function SalesPage() {
   const sales = await getSales();
+  const products = await getProducts();
 
   return (
     <div className="space-y-8">
@@ -33,7 +35,7 @@ export default async function SalesPage() {
           </p>
         </div>
 
-        <CreateSaleModal />
+        <CreateSaleModal products={products} />
       </div>
 
       <SalesTable data={sales} />

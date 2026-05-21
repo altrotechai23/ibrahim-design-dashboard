@@ -1,19 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-
 import { useForm } from "react-hook-form";
-
 import { z } from "zod";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { saleSchema } from "@/lib/validations/sale";
-
 import { createSale } from "@/actions/sales/create-sale";
 
 import { useRouter } from "next/navigation";
-
 import { toast } from "sonner";
 
 import {
@@ -50,7 +45,20 @@ type SaleFormValues = z.infer<
   typeof saleSchema
 >;
 
-export function CreateSaleModal() {
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  stock_quantity: number;
+}
+
+interface Props {
+  products: Product[];
+}
+
+export function CreateSaleModal({
+  products,
+}: Props) {
   const router = useRouter();
 
   const [loading, setLoading] =
@@ -63,20 +71,21 @@ export function CreateSaleModal() {
 
     defaultValues: {
       itemName: "",
-
       quantity: 1,
-
       unitPrice: 0,
-
       clientName: "",
-
       clientPhone: "",
-
       clientAddress: "",
-
       paymentStatus: "paid",
     },
   });
+
+  const selectedProduct =
+    products.find(
+      (product) =>
+        product.name ===
+        form.watch("itemName")
+    );
 
   const quantity = Number(
     form.watch("quantity") || 0
@@ -164,7 +173,8 @@ export function CreateSaleModal() {
               onSubmit
             )}
             className="
-              mt-6 space-y-6
+              mt-6
+              space-y-6
             "
           >
             <div
@@ -173,31 +183,70 @@ export function CreateSaleModal() {
                 md:grid-cols-2
               "
             >
-              {/* ITEM NAME */}
-              <FormField
-                control={form.control}
-                name="itemName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Item Name
-                    </FormLabel>
+              {/* PRODUCT */}
+              {/* PRODUCT */}
+<FormField
+  control={form.control}
+  name="itemName"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>
+        Product
+      </FormLabel>
 
-                    <FormControl>
-                      <Input
-                        placeholder="Suit"
-                        {...field}
-                        className="
-                          border-white/10
-                          bg-white/5
-                        "
-                      />
-                    </FormControl>
+      <Select
+        value={selectedProduct?.id || ""}
+        onValueChange={(productId) => {
+          const product = products.find(
+            (item) => item.id === productId
+          );
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          if (!product) return;
+
+          field.onChange(product.name);
+
+          form.setValue(
+            "unitPrice",
+            Number(product.price),
+            {
+              shouldDirty: true,
+              shouldValidate: true,
+            }
+          );
+        }}
+      >
+        <FormControl>
+          <SelectTrigger
+            className="
+              border-white/10
+              bg-white/5
+            "
+          >
+            <SelectValue placeholder="Select product" />
+          </SelectTrigger>
+        </FormControl>
+
+        <SelectContent
+          className="
+            border-white/10
+            bg-[#09090b]
+          "
+        >
+          {products.map((product) => (
+            <SelectItem
+              key={product.id}
+              value={product.id}
+            >
+              {product.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <FormMessage />
+    </FormItem>
+  )}
+/>
 
               {/* QUANTITY */}
               <FormField
@@ -212,13 +261,18 @@ export function CreateSaleModal() {
                     <FormControl>
                       <Input
                         type="number"
+                        min={1}
                         value={String(
-                          field.value ?? ""
+                          field.value ??
+                            ""
                         )}
-                        onChange={(e) =>
+                        onChange={(
+                          e
+                        ) =>
                           field.onChange(
                             Number(
-                              e.target.value
+                              e.target
+                                .value
                             )
                           )
                         }
@@ -247,15 +301,9 @@ export function CreateSaleModal() {
                     <FormControl>
                       <Input
                         type="number"
-                        value={String(
-                          field.value ?? ""
-                        )}
-                        onChange={(e) =>
-                          field.onChange(
-                            Number(
-                              e.target.value
-                            )
-                          )
+                        readOnly
+                        value={
+                          field.value || 0
                         }
                         className="
                           border-white/10
@@ -280,11 +328,11 @@ export function CreateSaleModal() {
                     </FormLabel>
 
                     <Select
+                      value={
+                        field.value
+                      }
                       onValueChange={
                         field.onChange
-                      }
-                      defaultValue={
-                        field.value
                       }
                     >
                       <FormControl>
@@ -331,7 +379,7 @@ export function CreateSaleModal() {
 
                     <FormControl>
                       <Input
-                        placeholder="Optional"
+                        placeholder="John Doe"
                         {...field}
                         className="
                           border-white/10
@@ -372,7 +420,24 @@ export function CreateSaleModal() {
               />
             </div>
 
-            {/* CLIENT ADDRESS */}
+            {selectedProduct && (
+              <div
+                className="
+                  rounded-xl
+                  border border-white/10
+                  bg-white/5
+                  p-4
+                "
+              >
+                Available Stock:{" "}
+                <span className="font-semibold">
+                  {
+                    selectedProduct.stock_quantity
+                  }
+                </span>
+              </div>
+            )}
+
             <FormField
               control={form.control}
               name="clientAddress"
@@ -384,7 +449,7 @@ export function CreateSaleModal() {
 
                   <FormControl>
                     <Input
-                      placeholder="Optional"
+                      placeholder="Client address"
                       {...field}
                       className="
                         border-white/10
@@ -398,7 +463,6 @@ export function CreateSaleModal() {
               )}
             />
 
-            {/* TOTAL */}
             <div
               className="
                 rounded-2xl
@@ -418,7 +482,8 @@ export function CreateSaleModal() {
 
               <h2
                 className="
-                  mt-2 text-4xl
+                  mt-2
+                  text-4xl
                   font-semibold
                 "
               >
@@ -430,7 +495,8 @@ export function CreateSaleModal() {
               type="submit"
               disabled={loading}
               className="
-                w-full rounded-2xl
+                w-full
+                rounded-2xl
                 bg-blue-600
                 hover:bg-blue-500
               "
