@@ -1,0 +1,147 @@
+FASTEST SQL FIX
+
+Run in SQL Editor:
+
+alter table appointments
+enable row level security;
+
+Then:
+
+create policy "Allow inserts for authenticated users"
+on appointments
+for insert
+to authenticated
+with check (true);
+ALSO ALLOW SELECT
+create policy "Allow read for authenticated users"
+on appointments
+for select
+to authenticated
+using (true);
+
+================services=============
+alter table services
+enable row level security;
+
+create policy "Allow service inserts"
+on services
+for insert
+with check (true);
+
+create policy "Allow service reads"
+on services
+for select
+using (true);
+
+create policy "Allow service updates"
+on services
+for update
+using (true);
+
+create policy "Allow service deletes"
+on services
+for delete
+using (true);
+
+===============================
+
+create policy "Allow appointment updates"
+on appointments
+for update
+using (true);
+
+=====================================
+
+Create Products Table
+
+In Supabase SQL Editor:
+
+create table if not exists products (
+  id uuid primary key default gen_random_uuid(),
+
+  name text not null,
+
+  category text,
+
+  price numeric not null default 0,
+
+  stock_quantity integer not null default 0,
+
+  sku text,
+
+  low_stock_threshold integer default 5,
+
+  created_at timestamptz default now()
+);
+
+-------------------------
+
+Step 28.2 — Enable RLS
+alter table products enable row level security;
+
+--------------------
+Step 28.3 — Create Policies
+
+create policy "Allow authenticated read products"
+on products
+for select
+to authenticated
+using (true);
+
+create policy "Allow authenticated insert products"
+on products
+for insert
+to authenticated
+with check (true);
+
+create policy "Allow authenticated update products"
+on products
+for update
+to authenticated
+using (true);
+
+create policy "Allow authenticated delete products"
+on products
+for delete
+to authenticated
+using (true);
+
+---------------------------------------
+
+-- ENABLE RLS
+alter table products
+enable row level security;
+
+-- DELETE OLD POLICIES
+drop policy if exists "Allow authenticated insert products" on products;
+drop policy if exists "Allow authenticated read products" on products;
+drop policy if exists "Allow authenticated update products" on products;
+drop policy if exists "Allow authenticated delete products" on products;
+
+-- INSERT
+create policy "Allow authenticated insert products"
+on products
+for insert
+to authenticated
+with check (true);
+
+-- SELECT
+create policy "Allow authenticated read products"
+on products
+for select
+to authenticated
+using (true);
+
+-- UPDATE
+create policy "Allow authenticated update products"
+on products
+for update
+to authenticated
+using (true);
+
+-- DELETE
+create policy "Allow authenticated delete products"
+on products
+for delete
+to authenticated
+using (true);
