@@ -50,7 +50,7 @@ export function RecentAppointments() {
           </div>
 
           <div className="text-right">
-            <StatusBadge status={appointment.status} />
+            {/* <StatusBadge status={appointment.status} /> */}
 
             <p className="mt-3 font-semibold">
               {appointment.amount}
