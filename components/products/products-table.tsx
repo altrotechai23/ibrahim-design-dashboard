@@ -22,7 +22,9 @@ interface Product {
   category: string;
   price: number;
   stock_quantity: number;
+  low_stock_threshold: number;
   sku: string | null;
+  created_by: string | null;
 }
 
 interface Props {
@@ -33,6 +35,30 @@ const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "name",
     header: "Product",
+
+    cell: ({ row }) => (
+      <div>
+        <p className="font-medium">
+          {row.original.name}
+        </p>
+
+        {row.original.stock_quantity <=
+          row.original.low_stock_threshold && (
+          <span
+            className="
+              mt-1 inline-flex
+              rounded-full
+              bg-red-500/10
+              px-2 py-1
+              text-xs
+              text-red-400
+            "
+          >
+            Low Stock
+          </span>
+        )}
+      </div>
+    ),
   },
 
   {
@@ -45,8 +71,11 @@ const columns: ColumnDef<Product>[] = [
     header: "Price",
 
     cell: ({ row }) => (
-      <span>
-        R {row.original.price}
+      <span className="font-medium">
+        R{" "}
+        {Number(
+          row.original.price
+        ).toFixed(2)}
       </span>
     ),
   },
@@ -54,12 +83,33 @@ const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "stock_quantity",
     header: "Stock",
+
+    cell: ({ row }) => (
+      <span
+        className={
+          row.original.stock_quantity <=
+          row.original.low_stock_threshold
+            ? "text-red-400 font-medium"
+            : ""
+        }
+      >
+        {row.original.stock_quantity}
+      </span>
+    ),
   },
 
   {
     accessorKey: "sku",
     header: "SKU",
+
+    cell: ({ row }) => (
+      <span>
+        {row.original.sku || "-"}
+      </span>
+    ),
   },
+
+ 
 ];
 
 export function ProductsTable({
@@ -72,6 +122,37 @@ export function ProductsTable({
     getCoreRowModel:
       getCoreRowModel(),
   });
+
+  if (!data.length) {
+  return (
+    <div
+      className="
+        flex h-[400px]
+        items-center
+        justify-center
+        rounded-3xl
+        border border-dashed
+        border-white/10
+      "
+    >
+      <div className="text-center">
+        <p className="text-lg font-medium">
+          No products yet
+        </p>
+
+        <p
+          className="
+            mt-2
+            text-sm
+            text-muted-foreground
+          "
+        >
+          Create your first product.
+        </p>
+      </div>
+    </div>
+  );
+}
 
   return (
     <div
