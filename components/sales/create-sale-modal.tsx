@@ -80,26 +80,17 @@ export function CreateSaleModal({
 
       paymentStatus: "paid",
 
-      paymentType: "cash",
+      paymentType: "card",
 
       createdBy: "Unknown",
     },
   });
 
-  const selectedProduct =
-    products.find(
-      (product) =>
-        product.name ===
-        form.watch("itemName")
-    );
+  const selectedProduct = products.find((product) => product.name === form.watch("itemName"));
 
-  const quantity = Number(
-    form.watch("quantity") || 0
-  );
+  const quantity = Number(form.watch("quantity") || 0);
 
-  const unitPrice = Number(
-    form.watch("unitPrice") || 0
-  );
+  const unitPrice = Number(form.watch("unitPrice") || 0);
 
   const totalAmount = useMemo(() => {
     return quantity * unitPrice;
@@ -110,10 +101,7 @@ export function CreateSaleModal({
   ) {
     try {
       setLoading(true);
-
-      const result =
-        await createSale(values);
-
+      const result = await createSale(values);
       if (!result.success) {
         toast.error(
           result.error ||

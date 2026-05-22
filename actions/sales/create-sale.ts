@@ -20,6 +20,8 @@ interface CreateSaleProps {
   paymentStatus:
     | "paid"
     | "pending";
+  paymentType: "card" | "cash" ;
+  createdBy?: string,
 }
 
 export async function createSale(
@@ -30,29 +32,22 @@ export async function createSale(
       values.quantity *
       values.unitPrice;
 
-    const { error } = await supabase
-      .from("sales")
+    const { error } = await supabase.from("sales")
       .insert({
         item_name: values.itemName,
-
         quantity: values.quantity,
-
         unit_price: values.unitPrice,
-
         total_amount: totalAmount,
-
         client_name:
           values.clientName || null,
-
         client_phone:
           values.clientPhone || null,
-
         client_address:
           values.clientAddress ||
           null,
-
         payment_status:
           values.paymentStatus,
+         created_by:values.createdBy || "Unknown",
           
       });
 

@@ -21,7 +21,7 @@ export interface Sale {
 
   payment_type: "cash"| "card";
 
-  created_by: string | null;
+  created_by: string | undefined;
 
   created_at: string;
 }
