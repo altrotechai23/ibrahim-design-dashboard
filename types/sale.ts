@@ -19,6 +19,8 @@ export interface Sale {
     | "paid"
     | "pending";
 
+  payment_type: "cash"| "card";
+
   created_by: string | null;
 
   created_at: string;

@@ -1,8 +1,10 @@
+
 import { AppointmentsTable } from "@/components/tables/appointments-table";
 import { CreateAppointmentModal } from "@/components/appointments/create-appointment-modal";
 import { getAppointments } from "@/actions/appointments/get-appointments";
 import { getServices } from "@/actions/services/get-services";
 
+export const dynamic = "force-dynamic";
 
 export default async function AppointmentsPage() {
     const appointments = await getAppointments();

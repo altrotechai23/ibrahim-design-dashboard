@@ -73,10 +73,16 @@ export function CreateSaleModal({
       itemName: "",
       quantity: 1,
       unitPrice: 0,
+
       clientName: "",
       clientPhone: "",
       clientAddress: "",
+
       paymentStatus: "paid",
+
+      paymentType: "cash",
+
+      createdBy: "Unknown",
     },
   });
 
@@ -185,68 +191,68 @@ export function CreateSaleModal({
             >
               {/* PRODUCT */}
               {/* PRODUCT */}
-<FormField
-  control={form.control}
-  name="itemName"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>
-        Product
-      </FormLabel>
+              <FormField
+                control={form.control}
+                name="itemName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Product
+                    </FormLabel>
 
-      <Select
-        value={selectedProduct?.id || ""}
-        onValueChange={(productId) => {
-          const product = products.find(
-            (item) => item.id === productId
-          );
+                    <Select
+                      value={selectedProduct?.id || ""}
+                      onValueChange={(productId) => {
+                        const product = products.find(
+                          (item) => item.id === productId
+                        );
 
-          if (!product) return;
+                        if (!product) return;
 
-          field.onChange(product.name);
+                        field.onChange(product.name);
 
-          form.setValue(
-            "unitPrice",
-            Number(product.price),
-            {
-              shouldDirty: true,
-              shouldValidate: true,
-            }
-          );
-        }}
-      >
-        <FormControl>
-          <SelectTrigger
-            className="
-              border-white/10
-              bg-white/5
-            "
-          >
-            <SelectValue placeholder="Select product" />
-          </SelectTrigger>
-        </FormControl>
+                        form.setValue(
+                          "unitPrice",
+                          Number(product.price),
+                          {
+                            shouldDirty: true,
+                            shouldValidate: true,
+                          }
+                        );
+                      }}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          className="
+                            border-white/10
+                            bg-white/5
+                          "
+                        >
+                          <SelectValue placeholder="Select product" />
+                        </SelectTrigger>
+                      </FormControl>
 
-        <SelectContent
-          className="
-            border-white/10
-            bg-[#09090b]
-          "
-        >
-          {products.map((product) => (
-            <SelectItem
-              key={product.id}
-              value={product.id}
-            >
-              {product.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+                      <SelectContent
+                        className="
+                          border-white/10
+                          bg-[#09090b]
+                        "
+                      >
+                        {products.map((product) => (
+                          <SelectItem
+                            key={product.id}
+                            value={product.id}
+                          >
+                            {product.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
 
-      <FormMessage />
-    </FormItem>
-  )}
-/>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {/* QUANTITY */}
               <FormField
@@ -289,6 +295,7 @@ export function CreateSaleModal({
               />
 
               {/* UNIT PRICE */}
+              {/* UNIT PRICE */}
               <FormField
                 control={form.control}
                 name="unitPrice"
@@ -301,9 +308,13 @@ export function CreateSaleModal({
                     <FormControl>
                       <Input
                         type="number"
-                        readOnly
-                        value={
-                          field.value || 0
+                        min={0}
+                        placeholder="Enter selling price"
+                        value={field.value ?? ""}
+                        onChange={(e) =>
+                          field.onChange(
+                            Number(e.target.value)
+                          )
                         }
                         className="
                           border-white/10
@@ -366,6 +377,42 @@ export function CreateSaleModal({
                   </FormItem>
                 )}
               />
+
+              {/* PAYMENT TYPE */}
+              <FormField
+  control={form.control}
+  name="paymentType"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>
+        Payment Type
+      </FormLabel>
+
+      <Select
+        value={field.value}
+        onValueChange={field.onChange}
+      >
+        <FormControl>
+          <SelectTrigger className=" border-white/10 bg-white/5">
+            <SelectValue />
+          </SelectTrigger>
+        </FormControl>
+
+        <SelectContent className=" border-white/10 bg-[#09090b]">
+          <SelectItem value="cash">
+            Cash
+          </SelectItem>
+
+          <SelectItem value="card">
+            Card
+          </SelectItem>
+        </SelectContent>
+      </Select>
+
+      <FormMessage />
+    </FormItem>
+  )}
+/>
 
               {/* CLIENT NAME */}
               <FormField

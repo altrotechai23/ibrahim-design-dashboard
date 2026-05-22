@@ -139,6 +139,17 @@ const columns: ColumnDef<Sale>[] = [
       />
     ),
   },
+  {
+    accessorKey: "payment_type",
+
+    header: "Payment Type",
+
+    cell: ({ row }) => (
+      <span className="capitalize">
+        {row.original.payment_type}
+      </span>
+    ),
+  },
 
   {
     accessorKey: "created_at",

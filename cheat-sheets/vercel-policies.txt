@@ -224,3 +224,52 @@ on sales
 for delete
 to authenticated
 using (true);
+
+===================================
+drop policy if exists "Allow authenticated insert sales"
+on sales;
+
+create policy "Allow authenticated insert sales"
+on sales
+for insert
+to authenticated
+with check (true);
+
+
+drop policy if exists "Allow authenticated read sales"
+on sales;
+
+create policy "Allow authenticated read sales"
+on sales
+for select
+to authenticated
+using (true);
+
+
+drop policy if exists "Allow authenticated update sales"
+on sales;
+
+create policy "Allow authenticated update sales"
+on sales
+for update
+to authenticated
+using (true)
+with check (true);
+
+fix: 
+create policy "Full access sales anon"
+on sales
+for all
+to anon
+using (true)
+with check (true);
+
+============ADD NEW COLUM ON SALES TABLE ==============
+
+alter table sales
+add column if not exists payment_type text
+default 'cash';
+
+alter table sales
+add column if not exists created_by text
+default 'Unknown';

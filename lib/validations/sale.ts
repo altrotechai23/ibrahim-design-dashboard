@@ -17,4 +17,11 @@ export const saleSchema = z.object({
     "paid",
     "pending",
   ]),
+  paymentType: z.enum([
+  "cash",
+  "card",
+]),
+
+createdBy: z.string().optional(),
 });
+

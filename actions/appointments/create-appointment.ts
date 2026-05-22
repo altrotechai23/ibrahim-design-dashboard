@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 
 import { supabase } from "@/lib/supabase/client";
 import { sendSMS } from "@/lib/twilio/send-sms";
@@ -72,7 +73,7 @@ export async function createAppointment(
         record_id: appointment.id,
         description: `Created appointment for ${data.clientName}`,
       });
-
+      revalidatePath("/dashboard/appointments");
     return {
       success: true,
     };

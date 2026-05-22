@@ -53,6 +53,7 @@ export async function createSale(
 
         payment_status:
           values.paymentStatus,
+          
       });
 
     if (error) {
