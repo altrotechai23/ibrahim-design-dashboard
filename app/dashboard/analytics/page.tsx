@@ -9,20 +9,13 @@ import { RecentActivity } from "@/components/analytics/recent-activity";
 import { supabase } from "@/lib/supabase/client";
 
 export default async function AnalyticsPage() {
-  const [
-    salesResult,
-    appointmentsResult,
-    productsResult,
-  ] = await Promise.all([
-    supabase
-      .from("sales")
+  const [salesResult, appointmentsResult, productsResult,] = await Promise.all([supabase.from("sales")
       .select("*")
       .order("created_at", {
         ascending: false,
       }),
 
-    supabase
-      .from("appointments")
+    supabase.from("appointments")
       .select("*")
       .order("created_at", {
         ascending: false,
@@ -37,42 +30,13 @@ export default async function AnalyticsPage() {
   ]);
 
   const sales = salesResult.data ?? [];
-  const appointments =
-    appointmentsResult.data ?? [];
-  const products =
-    productsResult.data ?? [];
+  const appointments = appointmentsResult.data ?? [];
+  const products = productsResult.data ?? [];
 
-  const totalRevenue = sales.reduce(
-    (sum, sale) =>
-      sum +
-      Number(
-        sale.total_amount || 0
-      ),
-    0
-  );
+  const totalRevenue = sales.reduce((sum, sale) => sum + Number( sale.total_amount || 0), 0);
 
   const totalSales = sales.length;
 
-  const paidSales = sales.filter(
-    (sale) =>
-      sale.payment_status ===
-      "paid"
-  ).length;
-
-  const pendingSales =
-    sales.filter(
-      (sale) =>
-        sale.payment_status ===
-        "pending"
-    ).length;
-
-  const lowStockProducts =
-    products.filter(
-      (product) =>
-        product.stock_quantity <=
-        (product.low_stock_threshold ??
-          5)
-    ).length;
 
   // Weekly Revenue
   const weeklyRevenue = Array.from(

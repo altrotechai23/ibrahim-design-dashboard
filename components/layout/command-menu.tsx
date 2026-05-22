@@ -4,6 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 
 import {
+  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -67,7 +68,11 @@ export function CommandMenu() {
   }, []);
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+  <CommandDialog
+    open={open}
+    onOpenChange={setOpen}
+  >
+    <Command>
       <CommandInput placeholder="Search anything..." />
 
       <CommandList>
@@ -82,7 +87,6 @@ export function CommandMenu() {
               value={page.name}
               onSelect={() => {
                 router.push(page.href);
-
                 setOpen(false);
               }}
             >
@@ -91,6 +95,7 @@ export function CommandMenu() {
           ))}
         </CommandGroup>
       </CommandList>
-    </CommandDialog>
-  );
+    </Command>
+  </CommandDialog>
+);
 }
