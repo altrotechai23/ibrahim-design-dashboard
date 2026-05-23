@@ -273,3 +273,45 @@ default 'cash';
 alter table sales
 add column if not exists created_by text
 default 'Unknown';
+
+=========================
+alter table admins
+enable row level security;
+
+create policy "Allow all admins"
+
+on admins
+
+for all
+
+using (true)
+
+with check (true);
+
+===============================
+create policy "Owners manage products"
+
+on products
+
+for all
+
+using (
+  exists (
+    select 1
+    from admins
+    where admins.id = auth.uid()
+    and admins.role = 'owner'
+  )
+);
+
+
+==================appointments update =================
+ALTER TABLE appointments
+ADD COLUMN payment_type TEXT
+DEFAULT 'cash'
+CHECK (
+  payment_type IN (
+    'cash',
+    'card'
+  )
+);

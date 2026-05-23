@@ -6,14 +6,20 @@ import { usePathname } from "next/navigation";
 import { Drawer } from "vaul";
 import { Menu } from "lucide-react";
 
-import { navigationLinks } from "@/constants/navigation";
+
 import { cn } from "@/lib/utils";
+import { getNavigationLinks } from "@/constants/navigation";
+import { useAdmin } from "@/contexts/admin-context";
 
 export function MobileSidebar() {
   const pathname = usePathname();
 
   const [open, setOpen] = useState(false);
-
+   const { admin } = useAdmin();
+   
+  const navigationLinks = admin  ? getNavigationLinks(admin?.role) : []
+   
+ 
   return (
     <Drawer.Root open={open} onOpenChange={setOpen}>
       <Drawer.Trigger asChild>

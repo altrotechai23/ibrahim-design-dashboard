@@ -129,7 +129,7 @@ const columns: ColumnDef<Sale>[] = [
   {
     accessorKey: "payment_status",
 
-    header: "Payment",
+    header: "Payment Status",
 
     cell: ({ row }) => (
       <PaymentBadge

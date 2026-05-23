@@ -5,11 +5,26 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Settings } from "lucide-react";
 
-import { navigationLinks } from "@/constants/navigation";
+
+import { useAdmin } from "@/contexts/admin-context";
 import { cn } from "@/lib/utils";
+import { getNavigationLinks } from "@/constants/navigation";
+import { startTransition, useEffect, useState } from "react";
 
 export function Sidebar() {
   const pathname = usePathname();
+
+  const { admin } = useAdmin();
+
+  const links = admin ? getNavigationLinks(admin.role) : [];
+
+  console.log(links)
+
+
+
+
+
+ 
 
   return (
     <aside
@@ -30,12 +45,37 @@ export function Sidebar() {
         <p className="mt-1 text-sm text-muted-foreground">
           Tailoring ERP Platform
         </p>
+
+        {admin && (
+          <div
+            className="
+              mt-4 rounded-xl
+              border border-white/10
+              bg-white/5
+              p-3
+            "
+          >
+            <p className="font-medium">
+              {admin.name}
+            </p>
+
+            <p
+              className="
+                text-xs uppercase
+                text-muted-foreground
+              "
+            >
+              {admin.role}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* NAVIGATION */}
       <nav className="flex-1 space-y-2 p-4">
-        {navigationLinks.map((link) => {
-          const isActive = pathname === link.href;
+        {links.map((link) => {
+          const isActive =
+            pathname === link.href;
 
           const Icon = link.icon;
 
@@ -55,15 +95,14 @@ export function Sidebar() {
                   : "text-muted-foreground hover:bg-white/5 hover:text-white"
               )}
             >
-              {/* ACTIVE BACKGROUND */}
               {isActive && (
                 <motion.div
                   layoutId="sidebar-active"
                   className="
                     absolute inset-0
                     rounded-2xl
-                    bg-white/10
                     border border-white/10
+                    bg-white/10
                   "
                   transition={{
                     type: "spring",

@@ -68,6 +68,7 @@ export function CreateAppointmentModal({ services,}: Props) {
       fittingDate: "",
       deposit: 0,
       totalAmount: 0,
+      paymentMethod: "cash",
       collectionDate: "",
     },
   });
@@ -360,6 +361,51 @@ export function CreateAppointmentModal({ services,}: Props) {
                         "
                       />
                     </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* PAYMENT METHOD */}
+              <FormField
+                control={form.control}
+                name="paymentMethod"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Payment Method
+                    </FormLabel>
+
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          className="
+                            border-white/10
+                            bg-white/5
+                          "
+                        >
+                          <SelectValue placeholder="Select payment method" />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent
+                        className="
+                          border-white/10
+                          bg-[#09090b]
+                        "
+                      >
+                        <SelectItem value="cash">
+                          Cash
+                        </SelectItem>
+
+                        <SelectItem value="card">
+                          Card
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
 
                     <FormMessage />
                   </FormItem>

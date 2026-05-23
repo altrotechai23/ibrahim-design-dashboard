@@ -17,11 +17,9 @@ export interface Appointment {
 
   due_balance: number;
 
-  collection_status:
-    | "pending"
-    | "ready_for_collection"
-    | "collected"
-    | "cancelled";
+  payment_method:| "cash" | "card";
+
+  collection_status: | "pending" | "ready_for_collection" | "collected" | "cancelled";
 
   created_at: string;
 

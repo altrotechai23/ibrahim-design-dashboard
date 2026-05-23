@@ -1,7 +1,7 @@
 "use client";
 
 import { Bell, Search } from "lucide-react";
-import { MobileSidebar } from "./mobile-sidebar";
+import { MobileSidebar } from "../dashboard/mobile-sidebar";
 import { openCommandMenu } from "@/lib/command";
 
 export function Topbar() {

@@ -81,7 +81,7 @@ export function StatusCell({
     >
       <SelectTrigger
         className={`
-          w-[200px]
+         
           border-0
           ${getStatusColor(status)}
         `}

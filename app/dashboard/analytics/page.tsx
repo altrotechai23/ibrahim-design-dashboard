@@ -9,13 +9,15 @@ import { RecentActivity } from "@/components/analytics/recent-activity";
 import { supabase } from "@/lib/supabase/client";
 
 export default async function AnalyticsPage() {
-  const [salesResult, appointmentsResult, productsResult,] = await Promise.all([supabase.from("sales")
+  const [salesResult, appointmentsResult, productsResult,] = await Promise.all([supabase
+      .from("sales")
       .select("*")
       .order("created_at", {
         ascending: false,
       }),
 
-    supabase.from("appointments")
+    supabase
+      .from("appointments")
       .select("*")
       .order("created_at", {
         ascending: false,

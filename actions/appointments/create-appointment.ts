@@ -1,4 +1,5 @@
 "use server";
+
 import { revalidatePath } from "next/cache";
 
 import { supabase } from "@/lib/supabase/client";
@@ -13,6 +14,8 @@ interface CreateAppointmentInput {
   collectionDate?: string;
   totalAmount: number;
   deposit: number;
+
+  paymentMethod: "cash" | "card";
 }
 
 export async function createAppointment(
@@ -22,11 +25,11 @@ export async function createAppointment(
     const dueBalance =
       data.totalAmount - data.deposit;
 
-   
-
     // CREATE APPOINTMENT
-    const { data: appointment, error } =
-      await supabase.from("appointments").insert({
+    const {
+      data: appointment,
+      error,
+    } = await supabase.from("appointments").insert({
           client_name: data.clientName,
           phone: data.phone,
           email: data.email || null,
@@ -36,44 +39,61 @@ export async function createAppointment(
           total_amount: data.totalAmount,
           deposit: data.deposit,
           due_balance: dueBalance,
+          payment_method: data.paymentMethod,
         })
-        .select()
-        .single();
+      .select()
+      .single();
 
     if (error) {
       throw error;
     }
-    
-    const accountSid = await sendSMS({
-        to:
-            process.env.IBRAHIM_PHONE_NUMBER!,
 
-        body: `
-        New Appointment Created
+    const smsResult = await sendSMS({
+      to:
+        process.env
+          .IBRAHIM_PHONE_NUMBER!,
 
-        Client: ${data.clientName}
+      body: `
+New Appointment Created
 
-        Service: ${data.serviceId}
+Client: ${data.clientName}
 
-        Deposit: R${data.deposit}
+Service: ${data.serviceId}
 
-        Total: R${data.totalAmount}
-        `,
+Payment Method: ${data.paymentMethod}
+
+Deposit: R${data.deposit}
+
+Total: R${data.totalAmount}
+      `,
     });
 
-    console.log('Altrono message sent with status : ');
+    console.log(
+      "Altrono message sent with status:"
+    );
 
-    console.log(accountSid.success);
-    // CREATE LOG
+    console.log(smsResult.success);
+
+    // AUDIT LOG
     await supabase
       .from("audit_logs")
       .insert({
         action: "CREATE",
         table_name: "appointments",
         record_id: appointment.id,
-        description: `Created appointment for ${data.clientName}`,
+
+        description: `
+Created appointment for ${data.clientName}
+using ${data.paymentMethod}
+        `,
       });
-      revalidatePath("/dashboard/appointments");
+
+    revalidatePath(
+      "/dashboard/appointments"
+    );
+
+    revalidatePath("/dashboard");
+
     return {
       success: true,
     };
@@ -82,7 +102,8 @@ export async function createAppointment(
 
     return {
       success: false,
-      error: "Failed to create appointment",
+      error:
+        "Failed to create appointment",
     };
   }
 }

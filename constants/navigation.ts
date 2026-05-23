@@ -8,7 +8,12 @@ import {
   Package,
 } from "lucide-react";
 
-export const navigationLinks = [
+export type AdminRole =
+  | "owner"
+  | "manager"
+  | "staff";
+
+const ownerLinks = [
   {
     name: "Dashboard",
     href: "/dashboard",
@@ -45,3 +50,44 @@ export const navigationLinks = [
     icon: ClipboardList,
   },
 ];
+
+const managerLinks = [
+  {
+    name: "Appointments",
+    href: "/dashboard/appointments",
+    icon: CalendarDays,
+  },
+  {
+    name: "Sales",
+    href: "/dashboard/sales",
+    icon: ShoppingBag,
+  },
+];
+
+const staffLinks = [
+  {
+    name: "Appointments",
+    href: "/dashboard/appointments",
+    icon: CalendarDays,
+  },
+  {
+    name: "Sales",
+    href: "/dashboard/sales",
+    icon: ShoppingBag,
+  },
+];
+
+export function getNavigationLinks(
+  role: AdminRole
+) {
+  switch (role) {
+    case "manager":
+      return managerLinks;
+
+    case "staff":
+      return staffLinks;
+
+    default:
+      return ownerLinks;
+  }
+}

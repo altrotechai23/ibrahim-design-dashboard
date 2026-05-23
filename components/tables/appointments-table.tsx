@@ -80,6 +80,35 @@ const columns: ColumnDef<Appointment>[] = [
       </span>
     ),
   },
+  {
+    accessorKey: "payment_method",
+
+    header: "Payment Method",
+
+    cell: ({ row }) => {
+      const method =
+        row.original.payment_method;
+
+      return (
+        <span
+          className={`
+            rounded-full px-3 py-1
+            text-xs font-medium
+
+            ${
+              method === "cash"
+                ? "bg-green-500/15 text-green-400"
+                : "bg-blue-500/15 text-blue-400"
+            }
+          `}
+        >
+          {method === "cash"
+            ? "Cash"
+            : "Card"}
+        </span>
+      );
+    },
+  },
 
   {
     accessorKey: "due_balance",

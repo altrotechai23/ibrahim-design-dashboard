@@ -20,6 +20,7 @@ export async function getAppointments(): Promise<Appointment[]> {
       total_amount,
       deposit,
       due_balance,
+      payment_method,
       collection_status,
       created_at,
       service_id
@@ -61,7 +62,7 @@ export async function getAppointments(): Promise<Appointment[]> {
 
       return {
         ...appointment,
-
+         payment_method:(appointment.payment_method ?? "cash") as "cash" | "card",
         service: matchedService,
       };
     });
