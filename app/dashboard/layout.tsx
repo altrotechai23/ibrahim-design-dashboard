@@ -12,17 +12,20 @@ export default function DashboardLayout({
   return (
     <AdminProvider>
         <ProtectedRoute>
-          <div className="flex min-h-screen bg-background">
-          <Sidebar />
+            <ProtectedRoute>
+              <div className="flex min-h-screen bg-background">
+                <Sidebar />
 
-          <main className="flex-1 overflow-hidden">
-            <Topbar />
-            <CommandMenu />
-            <div className="dashboard-padding">
-              {children}
-            </div>
-          </main>
-        </div>
+                <main className="flex-1 overflow-hidden">
+                  <Topbar />
+                  <CommandMenu />
+                  <div className="dashboard-padding">
+                    {children}
+                  </div>
+                </main>
+              </div>
+            </ProtectedRoute>
+          
        </ProtectedRoute>
       
     </AdminProvider>

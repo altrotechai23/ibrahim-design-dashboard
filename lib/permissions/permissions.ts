@@ -1,9 +1,6 @@
-export type Role =
-  | "owner"
-  | "manager"
-  | "staff";
+import { AdminRole } from "@/constants/navigation";
 
-export const permissions = {
+export const rolePermissions = {
   owner: [
     "/dashboard",
     "/dashboard/appointments",
@@ -28,14 +25,15 @@ export const permissions = {
 };
 
 export function canAccessRoute(
-  role: Role,
-  path: string
+  role: AdminRole,
+  pathname: string
 ) {
-  return permissions[role].some(
-    (allowedPath) =>
-      path === allowedPath ||
-      path.startsWith(
-        `${allowedPath}/`
-      )
+  const allowedRoutes =
+    rolePermissions[role];
+
+  return allowedRoutes.some(
+    (route) =>
+      pathname === route ||
+      pathname.startsWith(`${route}/`)
   );
 }

@@ -1,16 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import {
-  usePathname,
-  useRouter,
-} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useAdmin } from "@/contexts/admin-context";
 import { canAccessRoute } from "@/lib/permissions/permissions";
 
 
-export function ProtectedRoute({
+export function RoleGuard({
   children,
 }: {
   children: React.ReactNode;
@@ -19,41 +16,24 @@ export function ProtectedRoute({
 
   const pathname = usePathname();
 
-  const { admin, setAdmin } =
-    useAdmin();
+  const { admin } = useAdmin();
 
   useEffect(() => {
-    const stored =
-      localStorage.getItem("admin");
-
-    if (!stored) {
-      router.replace("/login");
-      return;
-    }
-
-    const parsedAdmin =
-      JSON.parse(stored);
-
-    if (!admin) {
-      setAdmin(parsedAdmin);
-    }
+    if (!admin) return;
 
     const allowed =
       canAccessRoute(
-        parsedAdmin.role,
+        admin.role,
         pathname
       );
 
     if (!allowed) {
-      router.replace(
-        "/dashboard/forbidden"
-      );
+      router.replace("/dashboard");
     }
   }, [
+    admin,
     pathname,
     router,
-    admin,
-    setAdmin,
   ]);
 
   if (!admin) {
