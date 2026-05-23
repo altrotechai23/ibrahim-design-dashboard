@@ -46,6 +46,10 @@ export function MobileSidebar() {
             p-6
           "
         >
+
+           <Drawer.Title className="sr-only">
+            Navigation Menu
+          </Drawer.Title>
           <div className="mb-8">
             <h2 className="text-xl font-semibold">
               Ibrahim Design
