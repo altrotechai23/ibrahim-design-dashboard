@@ -41,6 +41,7 @@ import { appointmentSchema } from "@/lib/validations/appointment";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createAppointment } from "@/actions/appointments/create-appointment";
+import { useAdmin } from "@/contexts/admin-context";
 
 type AppointmentFormValues = z.infer<
   typeof appointmentSchema
@@ -55,7 +56,7 @@ interface Props {
 
 export function CreateAppointmentModal({ services,}: Props) {
   const router = useRouter();
-
+  const { admin } = useAdmin();
   const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(appointmentSchema),
@@ -70,6 +71,7 @@ export function CreateAppointmentModal({ services,}: Props) {
       totalAmount: 0,
       paymentMethod: "cash",
       collectionDate: "",
+      createdBy: admin?.name
     },
   });
 

@@ -1,7 +1,5 @@
 import { CreateSaleModal } from "@/components/sales/create-sale-modal";
 
-import { SalesTable } from "@/components/sales/sales-table";
-
 import { getSales } from "@/actions/sales/get-sales";
 import { getProducts } from "@/actions/products/get-products";
 import { SalesPageContent } from "@/components/sales/sales-page-content";

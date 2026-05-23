@@ -40,6 +40,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAdmin } from "@/contexts/admin-context";
 
 type SaleFormValues = z.infer<
   typeof saleSchema
@@ -60,7 +61,7 @@ export function CreateSaleModal({
   products,
 }: Props) {
   const router = useRouter();
-
+  const { admin } = useAdmin();
   const [loading, setLoading] =
     useState(false);
 
@@ -82,7 +83,7 @@ export function CreateSaleModal({
 
       paymentType: "card",
 
-      createdBy: "Unknown",
+      createdBy: admin?.name,
     },
   });
 

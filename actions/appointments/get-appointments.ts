@@ -23,7 +23,8 @@ export async function getAppointments(): Promise<Appointment[]> {
       payment_method,
       collection_status,
       created_at,
-      service_id
+      service_id,
+      created_by
     `)
     .order("created_at", {
       ascending: false,

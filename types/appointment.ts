@@ -25,6 +25,8 @@ export interface Appointment {
 
   service_id: string;
 
+  created_by: string
+
   service: {
     id: string;
     name: string;

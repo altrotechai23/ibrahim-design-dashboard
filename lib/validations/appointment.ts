@@ -43,6 +43,7 @@ export const appointmentSchema = z.object({
 
   collectionDate:
     z.string().optional(),
+  createdBy: z.string()
 });
 
 export type AppointmentFormValues =
