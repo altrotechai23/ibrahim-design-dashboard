@@ -9,7 +9,7 @@ import { Settings } from "lucide-react";
 import { useAdmin } from "@/contexts/admin-context";
 import { cn } from "@/lib/utils";
 import { getNavigationLinks } from "@/constants/navigation";
-import { startTransition, useEffect, useState } from "react";
+import { LogoutButton } from "../auth/logout-button";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -119,22 +119,10 @@ export function Sidebar() {
             </Link>
           );
         })}
+        <LogoutButton />
       </nav>
 
-      {/* FOOTER */}
-      <div className="border-t border-white/10 p-4">
-        <button
-          className="
-            flex w-full items-center gap-3
-            rounded-2xl px-4 py-3
-            text-sm text-muted-foreground
-            transition hover:bg-white/5 hover:text-white
-          "
-        >
-          <Settings size={18} />
-          Settings
-        </button>
-      </div>
+     
     </aside>
   );
 }

@@ -1,26 +1,37 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { useAdmin } from "@/contexts/admin-context";
 
 export function LogoutButton() {
   const router = useRouter();
 
-  function logout() {
-    localStorage.removeItem(
-      "admin"
-    );
+  const { setAdmin } = useAdmin();
 
-    router.push("/login");
+  function logout() {
+    localStorage.removeItem("admin");
+
+    setAdmin(null);
+
+    router.replace("/login");
   }
 
   return (
-    <Button
-      variant="outline"
+    <button
       onClick={logout}
+      className="
+        flex w-full items-center gap-3
+        rounded-2xl px-4 py-3
+        text-sm text-muted-foreground
+        transition-all duration-300
+        hover:bg-red-500/10
+        hover:text-red-400
+      "
     >
+      <LogOut size={18} />
       Logout
-    </Button>
+    </button>
   );
 }

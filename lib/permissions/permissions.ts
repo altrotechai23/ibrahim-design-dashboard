@@ -28,8 +28,15 @@ export function canAccessRoute(
   role: AdminRole,
   pathname: string
 ) {
+  // dashboard home is always allowed
+  if (pathname === "/dashboard") {
+    return true;
+  }
+
   const allowedRoutes =
-    rolePermissions[role];
+    rolePermissions[role].filter(
+      (route) => route !== "/dashboard"
+    );
 
   return allowedRoutes.some(
     (route) =>

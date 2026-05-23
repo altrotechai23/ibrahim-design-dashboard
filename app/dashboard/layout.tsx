@@ -1,4 +1,5 @@
 import { ProtectedRoute } from "@/components/auth/protected-route";
+import { RoleGuard } from "@/components/auth/role-guard";
 import { CommandMenu } from "@/components/layout/command-menu";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
@@ -11,23 +12,22 @@ export default function DashboardLayout({
 }) {
   return (
     <AdminProvider>
-        <ProtectedRoute>
-            <ProtectedRoute>
-              <div className="flex min-h-screen bg-background">
-                <Sidebar />
+      <ProtectedRoute>
+        <RoleGuard>
+          <div className="flex min-h-screen bg-background">
+            <Sidebar />
 
-                <main className="flex-1 overflow-hidden">
-                  <Topbar />
-                  <CommandMenu />
-                  <div className="dashboard-padding">
-                    {children}
-                  </div>
-                </main>
+            <main className="flex-1 overflow-hidden">
+              <Topbar />
+              <CommandMenu />
+
+              <div className="dashboard-padding">
+                {children}
               </div>
-            </ProtectedRoute>
-          
-       </ProtectedRoute>
-      
+            </main>
+          </div>
+        </RoleGuard>
+      </ProtectedRoute>
     </AdminProvider>
   );
 }

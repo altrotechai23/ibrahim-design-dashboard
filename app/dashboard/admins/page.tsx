@@ -5,8 +5,7 @@ import { AdminsTable } from "@/components/admins/admins-table";
 import { CreateAdminModal } from "@/components/admins/create-admin-modal";
 
 export default async function AdminsPage() {
-  const admins =
-    await getAdmins();
+  const admins = await getAdmins();
 
   return (
     <div className="space-y-8">

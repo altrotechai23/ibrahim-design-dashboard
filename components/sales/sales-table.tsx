@@ -211,7 +211,7 @@ export function SalesTable({
     return (
       <div
         className="
-          flex h-[400px]
+          flex h-100
           items-center
           justify-center
 
@@ -223,10 +223,10 @@ export function SalesTable({
         <div className="text-center">
           <p
             className="
-              text-lg font-medium
+              text-lg font-medium text-white
             "
           >
-            No sales yet
+            No sales yet for today
           </p>
 
           <p

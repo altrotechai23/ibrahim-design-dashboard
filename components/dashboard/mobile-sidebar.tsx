@@ -10,6 +10,7 @@ import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getNavigationLinks } from "@/constants/navigation";
 import { useAdmin } from "@/contexts/admin-context";
+import { LogoutButton } from "../auth/logout-button";
 
 export function MobileSidebar() {
   const pathname = usePathname();
@@ -82,6 +83,9 @@ export function MobileSidebar() {
                 </Link>
               );
             })}
+            <div className="ml-4">
+              <LogoutButton />
+            </div>
           </nav>
         </Drawer.Content>
       </Drawer.Portal>

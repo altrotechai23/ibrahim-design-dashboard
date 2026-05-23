@@ -4,6 +4,7 @@ import { SalesTable } from "@/components/sales/sales-table";
 
 import { getSales } from "@/actions/sales/get-sales";
 import { getProducts } from "@/actions/products/get-products";
+import { SalesPageContent } from "@/components/sales/sales-page-content";
 
 export default async function SalesPage() {
   const sales = await getSales();
@@ -38,7 +39,9 @@ export default async function SalesPage() {
         <CreateSaleModal products={products} />
       </div>
 
-      <SalesTable data={sales} />
+       <SalesPageContent
+        sales={sales}
+      />
     </div>
   );
 }
