@@ -27,15 +27,16 @@ export const permissions = {
   ],
 };
 
-export function canAccessRoute(
-  role: Role,
-  path: string
-) {
-  return permissions[role].some(
-    (allowedPath) =>
-      path === allowedPath ||
-      path.startsWith(
-        `${allowedPath}/`
-      )
-  );
+export function canAccessRoute(role: Role,path: string) {
+  return permissions[role].filter(
+      (allowedPath) =>
+        allowedPath !== "/dashboard"
+    )
+    .some(
+      (allowedPath) =>
+        path === allowedPath ||
+        path.startsWith(
+          `${allowedPath}/`
+        )
+    );
 }
