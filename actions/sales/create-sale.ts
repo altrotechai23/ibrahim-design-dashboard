@@ -82,6 +82,16 @@ export async function createSale(
       console.log(`New stock : ${newStock}`)
     }
 
+    await supabase
+    .from("audit_logs")
+    .insert({
+      action: "UPDATE",
+      table_name: "sales",
+      record_id: values.unitPrice,
+      description:
+        `Updated by ${values.createdBy}`,
+    });
+
     revalidatePath("/dashboard/sales");
     revalidatePath("/dashboard");
 

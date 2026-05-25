@@ -47,9 +47,12 @@ export async function createAppointment(
       .select()
       .single();
 
+
     if (error) {
       throw error;
     }
+
+
 
     const smsResult = await sendSMS({
       to:
@@ -72,6 +75,9 @@ export async function createAppointment(
           Added by : ${data.createdBy}
       `,
     });
+
+
+    
 
     console.log(
       "Altrono message sent with status:"
