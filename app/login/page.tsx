@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAdmin } from "@/contexts/admin-context";
 
 export default function LoginPage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const {admin} = useAdmin()
 
   async function handleLogin() {
     
@@ -24,7 +26,12 @@ export default function LoginPage() {
         return;
       }
       localStorage.setItem("admin", JSON.stringify(result.admin));
-      router.push("/dashboard");
+      if (admin?.role === "owner"){
+         router.push("/dashboard");
+      } else {
+         router.push("/dashboard/appointments");
+      }
+       
     } finally {
       setLoading(false);
     }
