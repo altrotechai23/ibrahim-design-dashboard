@@ -44,7 +44,7 @@ export default function LoginPage() {
 
         .ib-page {
           min-height: 100vh;
-          background: #0a0905;
+          background: #111;
           display: flex;
           align-items: center;
           justify-content: center;
