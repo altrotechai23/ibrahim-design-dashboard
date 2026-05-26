@@ -24,6 +24,7 @@ export const appointmentSchema = z.object({
       1,
       "Please select a service"
     ),
+  serviceName: z.string().min(4),
 
   fittingDate: z
     .string()

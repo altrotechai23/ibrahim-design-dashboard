@@ -13,6 +13,7 @@ interface CreateAppointmentInput {
   serviceId: string;
   fittingDate: string;
   collectionDate?: string;
+  serviceName?: string;
   totalAmount: number;
   deposit: number;
   createdBy: string;
@@ -52,36 +53,26 @@ export async function createAppointment(
       throw error;
     }
 
+    const { data: service } = await supabase.from("services").select("name").eq("id", data.serviceId).single();
+
+   const message = [
+    "NEW APPOINTMENT CREATED",
+    "-----------------------",
+    `Client: ${data.clientName}`,
+    `Service: ${service?.name ?? "Unknown"}`,
+    `Payment Method: ${data.paymentMethod}`,
+    `Deposit: R${data.deposit}`,
+    `Total: R${data.totalAmount}`,
+   
+  ].join("\n");
+
+  const smsResult = await sendSMS({
+    to: process.env.IBRAHIM_PHONE_NUMBER!,
+    body: message,
+  });
 
 
-    const smsResult = await sendSMS({
-      to:
-        process.env
-          .IBRAHIM_PHONE_NUMBER!,
-
-      body: `
-          New Appointment Created
-
-          Client: ${data.clientName}
-
-          Service: ${data.serviceId}
-
-          Payment Method: ${data.paymentMethod}
-
-          Deposit: R${data.deposit}
-
-          Total: R${data.totalAmount}
-          
-          Added by : ${data.createdBy}
-      `,
-    });
-
-
-    
-
-    console.log(
-      "Altrono message sent with status:"
-    );
+   
 
     console.log(smsResult.success);
 
