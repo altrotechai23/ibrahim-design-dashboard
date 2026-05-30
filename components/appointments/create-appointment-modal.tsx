@@ -66,7 +66,6 @@ export function CreateAppointmentModal({ services,}: Props) {
       email: "",
       phone: "",
       serviceId: "",
-      serviceName: "",
       fittingDate: "",
       deposit: 0,
       totalAmount: 0,

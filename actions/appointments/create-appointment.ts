@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { supabase } from "@/lib/supabase/client";
 import { sendSMS } from "@/lib/twilio/send-sms";
-import { useAdmin } from "@/contexts/admin-context";
+
 
 interface CreateAppointmentInput {
   clientName: string;
@@ -13,11 +13,9 @@ interface CreateAppointmentInput {
   serviceId: string;
   fittingDate: string;
   collectionDate?: string;
-  serviceName?: string;
   totalAmount: number;
   deposit: number;
   createdBy: string;
-
   paymentMethod: "cash" | "card";
 }
 
@@ -60,6 +58,7 @@ export async function createAppointment(
     "-----------------------",
     `Client: ${data.clientName}`,
     `Service: ${service?.name ?? "Unknown"}`,
+    `Fitting Date: ${data.fittingDate}`,
     `Payment Method: ${data.paymentMethod}`,
     `Deposit: R${data.deposit}`,
     `Total: R${data.totalAmount}`,
