@@ -123,6 +123,7 @@ export function CreateAppointmentModal({ services,}: Props) {
     <Dialog>
       <DialogTrigger asChild>
         <Button
+          size={"sm"}
           className="
             rounded-2xl bg-blue-600
             hover:bg-blue-500
@@ -141,7 +142,7 @@ export function CreateAppointmentModal({ services,}: Props) {
         "
       >
         <DialogHeader>
-          <DialogTitle className="text-2xl">
+          <DialogTitle className="text-md md:text-2xl">
             Create Appointment
           </DialogTitle>
           <DialogDescription>

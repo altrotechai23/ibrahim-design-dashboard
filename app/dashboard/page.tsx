@@ -1,11 +1,3 @@
-import {
-  DollarSign,
-  CalendarDays,
-  ShoppingBag,
-  MessageSquare,
-} from "lucide-react";
-
-import { KpiCard } from "@/components/dashboard/kpi-card";
 import { DashboardSection } from "@/components/dashboard/dashboard-section";
 import { RevenueChart } from "@/components/charts/revenue-chart";
 import { RecentAppointments } from "@/components/dashboard/recent-appointments";

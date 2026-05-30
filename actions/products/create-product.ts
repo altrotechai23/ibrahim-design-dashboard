@@ -1,6 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
+import { revalidatePath } from "next/cache";
 
 interface CreateProductInput {
   name: string;
@@ -34,6 +35,9 @@ export async function createProduct(
       error: error.message,
     };
   }
+
+  revalidatePath("/dashboard/sales");
+  revalidatePath("/dashboard/products");
 
   return {
     success: true,

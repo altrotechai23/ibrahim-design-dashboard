@@ -74,7 +74,7 @@ export function StatsCards({
             rounded-3xl border
             border-white/10
 
-            bg-gradient-to-br
+            bg-linear-to-br
             ${card.gradient}
 
             p-6
