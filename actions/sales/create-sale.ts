@@ -93,6 +93,7 @@ export async function createSale(
     });
 
     revalidatePath("/dashboard/sales");
+    revalidatePath("/dashboard/analytics");
     revalidatePath("/dashboard");
 
     return {

@@ -93,6 +93,8 @@ using ${data.paymentMethod}
       "/dashboard/appointments"
     );
 
+    revalidatePath("/dashboard/analytics");
+
     revalidatePath("/dashboard");
 
     return {
